@@ -1,1 +1,1181 @@
 
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমাদের সঞ্চয় ও বিনিয়োগ - ড্যাশবোর্ড</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-green: #2e7d32;
+            --light-green: #e8f5e9;
+            --dark-blue: #1a237e;
+            --sidebar-bg: #1e2a38;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-dark: #333333;
+            --text-light: #777777;
+            --border-color: #e0e0e0;
+            --red: #d32f2f;
+            --gray-text: #9e9e9e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans Bengali', sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+        }
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 200px;
+            background-color: var(--sidebar-bg);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            flex-shrink: 0;
+            transition: left 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header i {
+            color: #4caf50;
+            font-size: 18px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 8px 0;
+            flex-grow: 1;
+        }
+
+        .sidebar-menu li {
+            padding: 9px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            color: #b0bec5;
+            transition: 0.3s;
+        }
+
+        .sidebar-menu li:hover, .sidebar-menu li.active {
+            background-color: var(--primary-green);
+            color: white;
+            border-left: 3px solid #81c784;
+        }
+
+        .sidebar-menu li i {
+            width: 16px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .sidebar-section-title {
+            padding: 8px 15px 4px;
+            font-size: 10px;
+            color: #78909c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-footer {
+            padding: 12px;
+            text-align: center;
+            font-size: 11px;
+            color: #b0bec5;
+            font-style: italic;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* --- Main Content Area --- */
+        .main-wrapper {
+            margin-left: 200px;
+            width: calc(100% - 200px);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Top Header */
+        .top-header {
+            background-color: var(--dark-blue);
+            color: white;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            position: sticky;
+            top: 0;
+            z-index: 99;
+        }
+
+        .top-header-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .top-header-title i {
+            color: #81c784;
+            font-size: 18px;
+        }
+
+        .top-header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .header-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            background: rgba(255,255,255,0.1);
+            padding: 4px 10px;
+            border-radius: 15px;
+        }
+
+        .btn-public-view {
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 98;
+        }
+
+        /* Dashboard Layout */
+        .dashboard-container {
+            display: flex;
+            padding: 12px;
+            gap: 12px;
+            flex-wrap: wrap;
+            flex-grow: 1;
+        }
+
+        .left-column {
+            flex: 1 1 65%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 300px;
+        }
+
+        .right-column {
+            flex: 1 1 30%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 250px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            padding: 12px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .card-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .card-header a {
+            color: var(--primary-green);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Overview Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .stat-box {
+            background: #fafafa;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+        }
+
+        .stat-box i {
+            font-size: 18px;
+            margin-bottom: 6px;
+        }
+
+        .stat-box .label {
+            font-size: 10px;
+            color: var(--text-light);
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .stat-box .value {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: block;
+        }
+
+        .stat-box .sub-value {
+            font-size: 9px;
+            color: var(--primary-green);
+            display: block;
+            margin-top: 3px;
+        }
+
+        .stat-box.blue i { color: #1976d2; }
+        .stat-box.green i { color: #388e3c; }
+        .stat-box.teal i { color: #00796b; }
+        .stat-box.purple i { color: #7b1fa2; }
+        .stat-box.orange i { color: #f57c00; }
+        .stat-box.money i { color: #388e3c; }
+
+        /* ১২ জন সদস্যের ড্রপডাউন লিস্ট */
+        .member-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: none;
+            max-height: 180px;
+            overflow-y: auto;
+            z-index: 10;
+            text-align: left;
+        }
+
+        .stat-box.blue:hover .member-dropdown {
+            display: block;
+        }
+
+        .member-dropdown ul {
+            list-style: none;
+            padding: 5px 0;
+            margin: 0;
+        }
+
+        .member-dropdown li {
+            padding: 6px 10px;
+            font-size: 11px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .member-dropdown li:last-child {
+            border-bottom: none;
+        }
+
+        .member-dropdown li span {
+            color: var(--text-light);
+        }
+
+        /* Charts Row */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        /* Bar Chart */
+        .bar-chart-container {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 120px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            margin-top: 8px;
+        }
+
+        .bar-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            height: 100%;
+            justify-content: flex-end;
+        }
+
+        .bar {
+            width: 22px;
+            background-color: var(--primary-green);
+            border-radius: 3px 3px 0 0;
+            transition: height 0.5s ease;
+            height: 0 !important;
+        }
+
+        .bar-label {
+            font-size: 8px;
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        .bar-value {
+            font-size: 8px;
+            font-weight: 600;
+        }
+
+        /* Pie Chart */
+        .pie-chart-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .pie-chart {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #388e3c 0% 0%,
+                #1976d2 0% 0%,
+                #7b1fa2 0% 0%,
+                #f57c00 0% 0%,
+                #00796b 0% 100%
+            );
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pie-chart::after {
+            content: "মোট ৳0";
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .pie-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-color {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+
+        th, td {
+            padding: 6px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        th {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .status-badge {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 2px 5px;
+            border-radius: 8px;
+            font-size: 9px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* Profile Icon */
+        .profile-icon {
+            width: 24px;
+            height: 24px;
+            background-color: #e0e0e0;
+            color: #757575;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            vertical-align: middle;
+        }
+
+        /* Right Column Specifics */
+        .summary-list {
+            list-style: none;
+            font-size: 11px;
+        }
+
+        .summary-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .summary-list li:last-child {
+            border-bottom: none;
+        }
+
+        .summary-list li span:last-child {
+            font-weight: 600;
+            color: var(--primary-green);
+        }
+
+        .investment-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 7px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .investment-item:last-child {
+            border-bottom: none;
+        }
+
+        .inv-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .inv-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--light-green);
+            color: var(--primary-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+        }
+
+        .inv-info h4 {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .inv-info p {
+            font-size: 9px;
+            color: var(--text-light);
+        }
+
+        .inv-amount {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .inv-percent {
+            font-size: 9px;
+            color: var(--primary-green);
+        }
+        
+        .inv-percent.red {
+            color: var(--red);
+        }
+
+        .btn-full-width {
+            width: 100%;
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 7px;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 11px;
+        }
+
+        /* Login Form */
+        .login-form input {
+            width: 100%;
+            padding: 7px;
+            margin-bottom: 7px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 11px;
+        }
+
+        .login-form button {
+            width: 100%;
+            background-color: var(--dark-blue);
+            color: white;
+            border: none;
+            padding: 7px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 11px;
+        }
+
+        .forgot-link {
+            display: block;
+            text-align: center;
+            font-size: 10px;
+            color: var(--text-light);
+            margin-top: 7px;
+            text-decoration: none;
+        }
+
+        /* Security Card */
+        .security-list {
+            list-style: none;
+            font-size: 10px;
+            color: var(--text-light);
+            padding-left: 10px;
+        }
+        .security-list li {
+            margin-bottom: 5px;
+            position: relative;
+        }
+        .security-list li::before {
+            content: "•";
+            color: var(--primary-green);
+            position: absolute;
+            left: -10px;
+            font-weight: bold;
+        }
+
+        /* Responsive Design (Mobile) */
+        @media (max-width: 768px) {
+            .sidebar {
+                left: -220px;
+            }
+            .sidebar.open {
+                left: 0;
+            }
+            .main-wrapper {
+                margin-left: 0;
+                width: 100%;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+            .overlay.active {
+                display: block;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .top-header {
+                flex-direction: row;
+                align-items: center;
+                flex-wrap: nowrap;
+            }
+            .top-header-title {
+                flex-grow: 1;
+                font-size: 12px;
+            }
+            .top-header-right {
+                gap: 5px;
+            }
+            .header-stat {
+                font-size: 9px;
+                padding: 3px 6px;
+            }
+            .dashboard-container {
+                flex-direction: column;
+            }
+            .left-column, .right-column {
+                flex: 1 1 100%;
+                min-width: 100%;
+            }
+            .table-responsive {
+                overflow-x: auto;
+            }
+            .pie-chart-container {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .top-header-title h1 {
+                font-size: 12px;
+            }
+            .top-header-title p {
+                font-size: 9px;
+            }
+            .btn-public-view {
+                font-size: 10px;
+                padding: 4px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-leaf"></i>
+                <span>আমাদের সঞ্চয়</span>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active"><i class="fas fa-home"></i> Dashboard</li>
+                <li><i class="fas fa-users"></i> Members</li>
+                <li><i class="fas fa-piggy-bank"></i> Monthly Savings</li>
+                <li><i class="fas fa-university"></i> Bank Transactions</li>
+                <li><i class="fas fa-chart-line"></i> Investments</li>
+                <li><i class="fas fa-exchange-alt"></i> Investment Transactions</li>
+                <li><i class="fas fa-chart-pie"></i> Profit & Loss</li>
+                <li><i class="fas fa-file-invoice"></i> Audit / Records</li>
+            </ul>
+            
+            <div class="sidebar-section-title">Quick Links</div>
+            <ul class="sidebar-menu">
+                <li><i class="fab fa-google-drive"></i> Google Form (Add Data)</li>
+                <li><i class="fas fa-link"></i> Public View Link</li>
+            </ul>
+
+            <div class="sidebar-footer">
+                "ছোট ছোট সঞ্চয়<br>বড় স্বপ্নের ভিত্তি"
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-wrapper">
+            
+            <!-- Top Header -->
+            <header class="top-header">
+                <button class="mobile-menu-btn" id="menuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="top-header-title">
+                    <i class="fas fa-leaf"></i>
+                    <div>
+                        <h1 style="font-size: 14px;">আমাদের সঞ্চয় ও বিনিয়োগ</h1>
+                        <p style="font-size: 10px; font-weight: 400; opacity: 0.8;">একসাথে সঞ্চয়, নিরাপদ ভবিষ্যৎ</p>
+                    </div>
+                </div>
+                <div class="top-header-right">
+                    <div class="header-stat">
+                        <i class="fas fa-users"></i>
+                        <div>
+                            <span style="display:block; font-size: 8px; opacity: 0.8;">মোট সদস্য</span>
+                            <strong id="headerTotalMembers">১২ জন</strong>
+                        </div>
+                    </div>
+                    <div class="header-stat">
+                        <i class="fas fa-calendar-alt"></i>
+                        <div>
+                            <span style="display:block; font-size: 8px; opacity: 0.8;">আজকের তারিখ</span>
+                            <strong>26 Sep 2026</strong>
+                        </div>
+                    </div>
+                    <button class="btn-public-view">
+                        <i class="fas fa-eye"></i> Public View <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Body -->
+            <div class="dashboard-container">
+                
+                <!-- Left Column -->
+                <div class="left-column">
+                    
+                    <!-- Financial Overview -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-bar" style="color: var(--primary-green);"></i> Group Financial Overview</h3>
+                            <span style="font-size: 10px; color: var(--text-light);">এটাই আমাদের সম্মিলিত আর্থিক চিত্র</span>
+                        </div>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-box blue">
+                                <i class="fas fa-users"></i>
+                                <span class="label">মোট সদস্য</span>
+                                <span class="value" id="totalMembersBox">১২</span>
+                                <span class="sub-value">+২ নতুন সদস্য (এই মাসে)</span>
+                                
+                                <!-- ১২ জন সদস্যের ড্রপডাউন লিস্ট -->
+                                <div class="member-dropdown">
+                                    <ul id="memberDropdownList">
+                                        <!-- JS ডেটা লোড করবে -->
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="stat-box green">
+                                <i class="fas fa-piggy-bank"></i>
+                                <span class="label">মোট সঞ্চয়</span>
+                                <span class="value">৳2,000</span>
+                                <span class="sub-value">+ ৳0 (এই মাসে)</span>
+                            </div>
+                            <div class="stat-box teal">
+                                <i class="fas fa-university"></i>
+                                <span class="label">ব্যাংক ব্যালেন্স</span>
+                                <span class="value">৳2,000</span>
+                                <span class="sub-value">+ ৳0 (এই মাসে)</span>
+                            </div>
+                            <div class="stat-box purple">
+                                <i class="fas fa-coins"></i>
+                                <span class="label">মোট বিনিয়োগ</span>
+                                <span class="value">৳0</span>
+                                <span class="sub-value">+ ৳0 (এই মাসে)</span>
+                            </div>
+                            <div class="stat-box orange">
+                                <i class="fas fa-chart-line"></i>
+                                <span class="label">বর্তমান মূল্য</span>
+                                <span class="value">৳0</span>
+                                <span class="sub-value">+ ৳0 (লাভ)</span>
+                            </div>
+                            <div class="stat-box money">
+                                <i class="fas fa-hand-holding-usd"></i>
+                                <span class="label">মোট লাভ/ক্ষতি</span>
+                                <span class="value">৳0</span>
+                                <span class="sub-value">(মোট)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Row -->
+                    <div class="charts-row">
+                        <!-- Bar Chart (সব ০ করা হয়েছে) -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-calendar-alt" style="color: var(--primary-green);"></i> মাসভিত্তিক সঞ্চয় (গত ৬ মাস)</h3>
+                            </div>
+                            <div class="bar-chart-container">
+                                <div class="bar-wrapper">
+                                    <span class="bar-value">৳0</span>
+                                    <div class="bar" style="height: 0%;"></div>
+                                    <span class="bar-label">Apr<br>2026</span>
+                                </div>
+                                <div class="bar-wrapper">
+                                    <span class="bar-value">৳0</span>
+                                    <div class="bar" style="height: 0%;"></div>
+                                    <span class="bar-label">May<br>2026</span>
+                                </div>
+                                <div class="bar-wrapper">
+                                    <span class="bar-value">৳0</span>
+                                    <div class="bar" style="height: 0%;"></div>
+                                    <span class="bar-label">Jun<br>2026</span>
+                                </div>
+                                <div class="bar-wrapper">
+                                    <span class="bar-value">৳0</span>
+                                    <div class="bar" style="height: 0%;"></div>
+                                    <span class="bar-label">Jul<br>2026</span>
+                                </div>
+                                <div class="bar-wrapper">
+                                    <span class="bar-value">৳0</span>
+                                    <div class="bar" style="height: 0%;"></div>
+                                    <span class="bar-label">Aug<br>2026</span>
+                                </div>
+                                <div class="bar-wrapper">
+                                    <span class="bar-value">৳0</span>
+                                    <div class="bar" style="height: 0%;"></div>
+                                    <span class="bar-label">Sep<br>2026</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pie Chart (সব ০ করা হয়েছে) -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-chart-pie" style="color: var(--primary-green);"></i> টাকার বন্টন (বর্তমান)</h3>
+                            </div>
+                            <div class="pie-chart-container">
+                                <div class="pie-chart"></div>
+                                <div class="pie-legend">
+                                    <div class="legend-item"><div class="legend-color" style="background:#388e3c;"></div> সঞ্চয় <span style="margin-left:auto; font-weight:600;">0%</span></div>
+                                    <div class="legend-item"><div class="legend-color" style="background:#1976d2;"></div> ব্যাংক <span style="margin-left:auto; font-weight:600;">0%</span></div>
+                                    <div class="legend-item"><div class="legend-color" style="background:#7b1fa2;"></div> বিনিয়োগ <span style="margin-left:auto; font-weight:600;">0%</span></div>
+                                    <div class="legend-item"><div class="legend-color" style="background:#f57c00;"></div> হাতে/অন্যান্য <span style="margin-left:auto; font-weight:600;">0%</span></div>
+                                    <div class="legend-item"><div class="legend-color" style="background:#00796b;"></div> লাভ <span style="margin-left:auto; font-weight:600;">0%</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Transactions Table -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-clock" style="color: var(--primary-green);"></i> সাম্প্রতিক লেনদেন</h3>
+                            <a href="#">সব দেখুন <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>তারিখ</th>
+                                        <th>ধরন</th>
+                                        <th>বিবরণ</th>
+                                        <th>পরিমাণ</th>
+                                        <th>স্ট্যাটাস</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>26 Sep 2026</td>
+                                        <td><i class="fas fa-piggy-bank" style="color:#388e3c;"></i> সঞ্চয়</td>
+                                        <td>মিল্লাত</td>
+                                        <td>৳2,000</td>
+                                        <td><span class="status-badge"><i class="fas fa-check-circle"></i> সম্পন্ন</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>25 Sep 2026</td>
+                                        <td><i class="fas fa-piggy-bank" style="color:#388e3c;"></i> সঞ্চয়</td>
+                                        <td>ওবায়দুল ইসলাম</td>
+                                        <td>৳0</td>
+                                        <td><span class="status-badge"><i class="fas fa-check-circle"></i> সম্পন্ন</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>24 Sep 2026</td>
+                                        <td><i class="fas fa-university" style="color:#1976d2;"></i> ব্যাংক</td>
+                                        <td>ব্যাংকে জমা</td>
+                                        <td>৳0</td>
+                                        <td><span class="status-badge"><i class="fas fa-check-circle"></i> সম্পন্ন</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>22 Sep 2026</td>
+                                        <td><i class="fas fa-coins" style="color:#7b1fa2;"></i> বিনিয়োগ</td>
+                                        <td>ব্যবসা ১</td>
+                                        <td>৳0</td>
+                                        <td><span class="status-badge"><i class="fas fa-check-circle"></i> সম্পন্ন</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>20 Sep 2026</td>
+                                        <td><i class="fas fa-hand-holding-usd" style="color:#f57c00;"></i> আয়</td>
+                                        <td>ব্যবসা ২</td>
+                                        <td>৳0</td>
+                                        <td><span class="status-badge"><i class="fas fa-check-circle"></i> সম্পন্ন</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Member List (১২ জন সদস্য - প্রফাইল আইকন নামের উপরে) -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-users" style="color: var(--primary-green);"></i> সদস্য তালিকা (সংক্ষিপ্ত)</h3>
+                            <a href="#">সব দেখুন <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">ক্রমিক</th>
+                                        <th>নাম</th>
+                                        <th>মোট সঞ্চয়</th>
+                                        <th>অংশীদারিত্ব</th>
+                                        <th>লাভের অংশ</th>
+                                        <th>বর্তমান মূল্য</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="memberTableBody">
+                                    <!-- JS ডেটা লোড করবে -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="right-column">
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-eye" style="color: var(--primary-green);"></i> Public Summary</h3>
+                        </div>
+                        <p style="font-size: 9px; color: var(--text-light); margin-bottom: 6px;">সবার জন্য উন্মুক্ত (সূক্ষ্মাতিসূক্ষ্ম তথ্য)</p>
+                        <ul class="summary-list">
+                            <li><span><i class="fas fa-users" style="color:var(--primary-green); width:12px;"></i> মোট সদস্য</span> <span id="summaryTotalMembers">১২</span></li>
+                            <li><span><i class="fas fa-piggy-bank" style="color:var(--primary-green); width:12px;"></i> মোট সঞ্চয়</span> <span>৳2,000</span></li>
+                            <li><span><i class="fas fa-university" style="color:var(--primary-green); width:12px;"></i> ব্যাংক ব্যালেন্স</span> <span>৳2,000</span></li>
+                            <li><span><i class="fas fa-coins" style="color:var(--primary-green); width:12px;"></i> মোট বিনিয়োগ</span> <span>৳0</span></li>
+                            <li><span><i class="fas fa-chart-line" style="color:var(--primary-green); width:12px;"></i> বর্তমান মূল্য</span> <span>৳0</span></li>
+                            <li><span><i class="fas fa-hand-holding-usd" style="color:var(--primary-green); width:12px;"></i> মোট লাভ/ক্ষতি</span> <span>৳0</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>আমাদের বিনিয়োগসমূহ</h3>
+                        </div>
+                        <div class="investment-item">
+                            <div class="inv-left">
+                                <div class="inv-icon"><i class="fas fa-briefcase"></i></div>
+                                <div class="inv-info">
+                                    <h4>ব্যবসা ১</h4>
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div class="inv-amount">৳0</div>
+                                <div class="inv-percent">0%</div>
+                            </div>
+                        </div>
+                        <div class="investment-item">
+                            <div class="inv-left">
+                                <div class="inv-icon"><i class="fas fa-briefcase"></i></div>
+                                <div class="inv-info">
+                                    <h4>ব্যবসা ২</h4>
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div class="inv-amount">৳0</div>
+                                <div class="inv-percent">0%</div>
+                            </div>
+                        </div>
+                        <div class="investment-item">
+                            <div class="inv-left">
+                                <div class="inv-icon"><i class="fas fa-briefcase"></i></div>
+                                <div class="inv-info">
+                                    <h4>ব্যবসা ৩</h4>
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div class="inv-amount">৳0</div>
+                                <div class="inv-percent">0%</div>
+                            </div>
+                        </div>
+                        <button class="btn-full-width">সম্পূর্ণ বিনিয়োগ তালিকা দেখুন <i class="fas fa-arrow-right"></i></button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-lock" style="color: var(--primary-green);"></i> সদস্য লগইন</h3>
+                        </div>
+                        <p style="font-size: 10px; color: var(--text-light); margin-bottom: 6px;">নিজের হিসাব দেখতে লগইন করুন</p>
+                        <form class="login-form">
+                            <input type="text" placeholder="মোবাইল নম্বর / সদস্য ID">
+                            <div style="position: relative;">
+                                <input type="password" placeholder="পাসওয়ার্ড">
+                                <i class="fas fa-eye" style="position: absolute; right: 8px; top: 9px; color: var(--text-light); cursor: pointer; font-size: 11px;"></i>
+                            </div>
+                            <button type="button">লগইন</button>
+                            <a href="#" class="forgot-link">পাসওয়ার্ড ভুলে গেছেন?</a>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-shield-alt" style="color: var(--primary-green);"></i> নিরাপত্তা & গোপনীয়তা</h3>
+                        </div>
+                        <ul class="security-list">
+                            <li>ব্যক্তিগত তথ্য (ঠিকানা, মোবাইল, ব্যাংক) শুধু অনুমোদিত সদস্যরা দেখতে পারবেন।</li>
+                            <li>সবার জন্য উন্মুক্ত শুধুমাত্র মোট হিসাব ও বিনিয়োগের তথ্য।</li>
+                            <li>আপনার তথ্য নিরাপদ এবং Google Drive-এ সংরক্ষিত।</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript (HTML + CSS + JS একসাথে) -->
+    <script>
+        // ============================================
+        // সদস্যদের ডেটা (আপডেট করা)
+        // ============================================
+        const membersData = [
+            { name: "মহাসিন আলী", designation: "সভাপতি", savings: "৳0", share: "100%", profit: "৳0", currentValue: "৳0" },
+            { name: "ওবায়দুল ইসলাম", designation: "সহ-সভাপতি", savings: "৳0", share: "100%", profit: "৳0", currentValue: "৳0" },
+            { name: "আসাদুজ্জামান আসাদ", designation: "সাধারণ সম্পাদক", savings: "৳0", share: "100%", profit: "৳0", currentValue: "৳0" },
+            { name: "অহেদুল ইসলাম", designation: "কোষাধক", savings: "৳0", share: "100%", profit: "৳0", currentValue: "৳0" },
+            { name: "মিরাজ", designation: "তথ্য ও প্রচার সম্পাদক", savings: "৳0", share: "100%", profit: "৳0", currentValue: "৳0" },
+            { name: "এরশাদুল হক", designation: "", savings: "৳0", share: "100%", profit: "৳0", currentValue: "৳0" },
+            { name: "সাইদুল ইসলাম", designation: "", savings: "৳0", share: "100%", profit: "৳0", currentValue: "৳0" },
+            { name: "আব্দুল খালেক", designation: "", savings: "৳0", share: "100%", profit: "৳0", currentValue: "৳0" },
+            { name: "মিল্লাত", designation: "", savings: "৳2,000", share: "100%", profit: "৳0", currentValue: "৳0" },
+            { name: "মাইদুল ইসলাম", designation: "", savings: "৳0", share: "100%", profit: "৳0", currentValue: "৳0" },
+            { name: "রোকনুজ্জামান (রুকু)", designation: "", savings: "৳0", share: "100%", profit: "৳0", currentValue: "৳0" },
+            { name: "আবু বক্কর", designation: "", savings: "৳0", share: "100%", profit: "৳0", currentValue: "৳0" }
+        ];
+
+        // ============================================
+        // ডেটা লোড ও রেন্ডার করার ফাংশন
+        // ============================================
+        function renderDashboard() {
+            const members = membersData;
+
+            // মোট সদস্য সংখ্যা আপডেট
+            document.getElementById('headerTotalMembers').textContent = members.length + ' জন';
+            document.getElementById('totalMembersBox').textContent = members.length;
+            document.getElementById('summaryTotalMembers').textContent = members.length;
+
+            // ১. ড্রপডাউন লিস্ট তৈরি
+            const dropdownList = document.getElementById('memberDropdownList');
+            dropdownList.innerHTML = '';
+            members.forEach((member, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span>${index + 1}</span> ${member.name}`;
+                dropdownList.appendChild(li);
+            });
+
+            // ২. টেবিল তৈরি (প্রফাইল আইকন সবসময় নামের উপরে থাকবে)
+            const tableBody = document.getElementById('memberTableBody');
+            tableBody.innerHTML = '';
+            members.forEach((member, index) => {
+                const tr = document.createElement('tr');
+                
+                // প্রফাইল আইকন উপরে + নাম নিচে
+                let nameHtml = `
+                    <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 3px;">
+                        <span class="profile-icon"><i class="fas fa-user"></i></span>
+                        <span style="font-weight: 500;">${member.name}</span>
+                    </div>
+                `;
+                
+                // পদবি থাকলে নামের নিচে ধূসর রঙে যোগ করা
+                if (member.designation) {
+                    nameHtml += `<span style="font-size: 9px; color: #9e9e9e; font-weight: normal; margin-left: 0;">${member.designation}</span>`;
+                }
+
+                tr.innerHTML = `
+                    <td style="text-align: center;">${index + 1}</td>
+                    <td>${nameHtml}</td>
+                    <td>${member.savings}</td>
+                    <td>${member.share}</td>
+                    <td>${member.profit}</td>
+                    <td>${member.currentValue}</td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        // ============================================
+        // মোবাইল মেনু
+        // ============================================
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        if (menuBtn) {
+            menuBtn.addEventListener('click', () => {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+            });
+        }
+
+        if (overlay) {
+            overlay.addEventListener('click', () => {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+            });
+        }
+
+        // ============================================
+        // পেজ লোড হলে ডেটা রেন্ডার কর
+        // ============================================
+        document.addEventListener('DOMContentLoaded', renderDashboard);
+    </script>
+</body>
+</html>
