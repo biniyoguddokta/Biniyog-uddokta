@@ -1,0 +1,82 @@
+{
+  "siteInfo": {
+    "todayDate": "০১ অক্টোবর ২০২৬"
+  },
+  "financials": {
+    "totalSavings": "৳2,000",
+    "totalSavingsSub": "+ ৳0 (এই মাসে)",
+    "bankBalance": "৳2,000",
+    "totalInvestment": "৳0",
+    "currentValue": "৳0",
+    "totalProfit": "৳0"
+  },
+  "members": [
+    { "name": "মহাসিন আলী", "designation": "সভাপতি", "savings": "৳0", "share": "100%", "profit": "৳0", "currentValue": "৳0" },
+    { "name": "ওবায়দুল ইসলাম", "designation": "সহ-সভাপতি", "savings": "৳0", "share": "100%", "profit": "৳0", "currentValue": "৳0" },
+    { "name": "আসাদুজ্জামান আসাদ", "designation": "সাধারণ সম্পাদক", "savings": "৳0", "share": "100%", "profit": "৳0", "currentValue": "৳0" },
+    { "name": "অহেদুল ইসলাম", "designation": "কোষাধক", "savings": "৳0", "share": "100%", "profit": "৳0", "currentValue": "৳0" },
+    { "name": "মিরাজ", "designation": "তথ্য ও প্রচার সম্পাদক", "savings": "৳0", "share": "100%", "profit": "৳0", "currentValue": "৳0" },
+    { "name": "এরশাদুল হক", "designation": "", "savings": "৳0", "share": "100%", "profit": "৳0", "currentValue": "৳0" },
+    { "name": "সাইদুল ইসলাম", "designation": "", "savings": "৳0", "share": "100%", "profit": "৳0", "currentValue": "৳0" },
+    { "name": "আব্দুল খালেক", "designation": "", "savings": "৳0", "share": "100%", "profit": "৳0", "currentValue": "৳0" },
+    { "name": "মিল্লাত", "designation": "", "savings": "৳2,000", "share": "100%", "profit": "৳0", "currentValue": "৳0" },
+    { "name": "মাইদুল ইসলাম", "designation": "", "savings": "৳0", "share": "100%", "profit": "৳0", "currentValue": "৳0" },
+    { "name": "রোকনুজ্জামান (রুকু)", "designation": "", "savings": "৳0", "share": "100%", "profit": "৳0", "currentValue": "৳0" },
+    { "name": "আবু বক্কর", "designation": "", "savings": "৳0", "share": "100%", "profit": "৳0", "currentValue": "৳0" },
+    { "name": "রফিকুল ইসলাম", "designation": "", "savings": "৳0", "share": "100%", "profit": "৳0", "currentValue": "৳0" },
+    { "name": "জাহিদুল ইসলাম", "designation": "", "savings": "৳0", "share": "100%", "profit": "৳0", "currentValue": "৳0" },
+    { "name": "আল আমিন", "designation": "", "savings": "৳0", "share": "100%", "profit": "৳0", "currentValue": "৳0" }
+  ],
+  "recentTransactions": [
+    {
+      "date": "০১ অক্টোবর ২০২৬",
+      "type": "সঞ্চয়",
+      "icon": "fa-piggy-bank",
+      "color": "#388e3c",
+      "description": "মিল্লাত",
+      "amount": "৳2,000",
+      "status": "সম্পন্ন"
+    },
+    {
+      "date": "২৫ সেপ্টেম্বর ২০২৬",
+      "type": "সঞ্চয়",
+      "icon": "fa-piggy-bank",
+      "color": "#388e3c",
+      "description": "ওবায়দুল ইসলাম",
+      "amount": "৳0",
+      "status": "সম্পন্ন"
+    },
+    {
+      "date": "২৪ সেপ্টেম্বর ২০২৬",
+      "type": "ব্যাংক",
+      "icon": "fa-university",
+      "color": "#1976d2",
+      "description": "ব্যাংকে জমা",
+      "amount": "৳0",
+      "status": "সম্পন্ন"
+    },
+    {
+      "date": "২২ সেপ্টেম্বর ২০২৬",
+      "type": "বিনিয়োগ",
+      "icon": "fa-coins",
+      "color": "#7b1fa2",
+      "description": "ব্যবসা ১",
+      "amount": "৳0",
+      "status": "সম্পন্ন"
+    },
+    {
+      "date": "২০ সেপ্টেম্বর ২০২৬",
+      "type": "আয়",
+      "icon": "fa-hand-holding-usd",
+      "color": "#f57c00",
+      "description": "ব্যবসা ২",
+      "amount": "৳0",
+      "status": "সম্পন্ন"
+    }
+  ],
+  "investments": [
+    { "name": "ব্যবসা ১", "icon": "fa-briefcase", "amount": "৳0", "percent": "0%" },
+    { "name": "ব্যবসা ২", "icon": "fa-briefcase", "amount": "৳0", "percent": "0%" },
+    { "name": "ব্যবসা ৩", "icon": "fa-briefcase", "amount": "৳0", "percent": "0%" }
+  ]
+}
